@@ -1,9 +1,9 @@
 from selenium import webdriver
 import time
 import os
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 # 设置Chrome选项
 chrome_options = Options()
@@ -12,12 +12,8 @@ chrome_options.add_argument('--window-size=1420,1080')
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 
-# 指定ChromeDriver路径
-chrome_driver_path = '/home/runner/work/Neworld_SignIn/Neworld_SignIn/driver/chromedriver'
-service = Service(executable_path=chrome_driver_path)
-
-# 创建Chrome驱动程序
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# 创建Chrome驱动程序，自动管理ChromeDriver版本
+driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
 # 从环境变量中读取数据，包含账号密码和登录页面测试
 u = os.environ["USERNAME"]
@@ -30,7 +26,7 @@ driver.get("https://neworld.cloud/auth/login")
 # 获取cookies
 time.sleep(5)
 
-# 账号密码登录版本
+# 账号密码登录
 driver.find_element(By.ID, 'email').clear()
 driver.find_element(By.ID, "email").send_keys(u)
 
